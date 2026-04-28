@@ -1,0 +1,11 @@
+customer_id,tenure,monthly_charges,total_charges,contract_type,payment_method,churn
+1,2,70.5,141.0,month-to-month,electronic_check,1
+2,24,55.0,1320.0,one_year,credit_card,0
+3,6,89.9,539.4,month-to-month,electronic_check,1
+4,36,45.2,1627.2,two_year,bank_transfer,0
+5,12,60.0,720.0,one_year,credit_card,0
+6,1,95.0,95.0,month-to-month,electronic_check,1
+7,48,40.5,1944.0,two_year,bank_transfer,0
+8,8,85.0,680.0,month-to-month,electronic_check,1
+9,30,50.0,1500.0,one_year,credit_card,0
+10,3,99.0,297.0,month-to-month,electronic_check,1
