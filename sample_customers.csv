@@ -1,0 +1,4 @@
+customer_id,tenure,monthly_charges,total_charges,contract_type,payment_method
+101,4,85.5,342.0,month-to-month,electronic_check
+102,24,65.0,1560.0,one_year,credit_card
+103,2,95.0,190.0,month-to-month,electronic_check
