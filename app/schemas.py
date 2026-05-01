@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -21,3 +23,13 @@ class CustomerData(BaseModel):
     total_charges: float = Field(..., ge=0, description="Total amount charged to the customer")
     contract_type: str = Field(..., description="Customer contract type")
     payment_method: str = Field(..., description="Customer payment method")
+
+
+class PredictionResponse(BaseModel):
+    customer_id: int = Field(..., description="Unique customer identifier")
+    prediction: int = Field(..., description="Model prediction where 1 means churn and 0 means no churn")
+    churn_risk: str = Field(..., description="Human-readable churn risk label")
+    churn_probability: Optional[float] = Field(
+        None,
+        description="Predicted probability that the customer will churn"
+    )

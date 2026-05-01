@@ -3,7 +3,7 @@ import logging
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
-from app.schemas import CustomerData
+from app.schemas import CustomerData, PredictionResponse
 
 
 MODEL_PATH = "models/churn_model.joblib"
@@ -44,7 +44,7 @@ def health_check():
         "model_loaded": True
     }
 
-@app.post("/predict")
+@app.post("/predict", response_model=PredictionResponse)
 def predict_churn(customer: CustomerData):
     logger.info("Prediction request received for customer_id=%s", customer.customer_id)
 
