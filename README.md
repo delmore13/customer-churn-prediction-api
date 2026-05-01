@@ -1,186 +1,420 @@
-# Customer Churn Prediction API
+\# Customer Churn Prediction API
 
-## Project Summary
 
-This project is a production-style machine learning API that predicts whether a customer is likely to churn.
 
-The project demonstrates an end-to-end machine learning workflow, including data preparation, model training, model serialization, API development, input validation, real-time prediction, and automated API testing.
+A production-style machine learning API that predicts whether a customer is likely to churn based on customer account and billing information.
 
-## Business Problem
 
-Customer churn happens when customers stop using a company's product or service. Predicting churn helps a business identify customers who may leave, allowing the company to take action before losing revenue.
 
-This API receives customer information and returns a churn prediction, churn risk label, and churn probability score.
+This project demonstrates an end-to-end ML deployment workflow using FastAPI, a trained machine learning model, schema validation, automated testing, structured logging, batch prediction, modular service architecture, and Docker support.
 
-## Tech Stack
 
-* Python
-* Pandas
-* Scikit-learn
-* Joblib
-* FastAPI
-* Pydantic
-* Uvicorn
-* Pytest
-* HTTPX
 
-## Project Structure
+\---
+
+
+
+\## Project Overview
+
+
+
+Customer churn is a major business problem for subscription-based companies. This API allows a business to score individual customers or upload a CSV file for batch churn prediction.
+
+
+
+The goal is to show how a machine learning model can be wrapped inside a clean, testable, production-style API.
+
+
+
+\---
+
+
+
+\## Features
+
+
+
+\- Single-customer churn prediction endpoint
+
+\- Batch CSV prediction endpoint
+
+\- FastAPI interactive Swagger documentation
+
+\- Pydantic request and response validation
+
+\- Structured API logging
+
+\- Professional error handling
+
+\- Automated API tests with pytest
+
+\- Docker support for containerized deployment
+
+\- Modular service-layer architecture
+
+
+
+\---
+
+
+
+\## Tech Stack
+
+
+
+\- Python
+
+\- FastAPI
+
+\- Pydantic
+
+\- pandas
+
+\- scikit-learn
+
+\- joblib
+
+\- pytest
+
+\- Uvicorn
+
+\- Docker
+
+
+
+\---
+
+
+
+\## Project Structure
+
+
+
+```text
 
 customer\_churn\_api/
 
-* app/
+│
 
-  * **init**.py
-  * main.py
-  * schemas.py
-* data/
+├── app/
 
-  * churn.csv
-* models/
+│   ├── main.py
 
-  * churn\_model.joblib
-* screenshots/
+│   ├── schemas.py
 
-  * project1\_predict\_success.png.jpg
-  * project1\_pytest\_success.png
-* src/
+│   └── services/
 
-  * app.py
-  * schema.py
-  * train.py
-* tests/
+│       ├── \_\_init\_\_.py
 
-  * test\_app.py
-* README.md
-* requirements.txt
+│       └── prediction\_service.py
 
-## Features
+│
 
-* Trains a machine learning model to predict customer churn
-* Saves the trained model as a reusable model artifact
-* Loads the trained model inside a FastAPI application
-* Validates incoming customer data using Pydantic
-* Provides a real-time prediction endpoint
-* Returns churn prediction, risk label, and probability score
-* Includes a health check endpoint
-* Includes automated API tests using Pytest
+├── models/
 
-## API Endpoints
+│   └── churn\_model.joblib
 
-### Home Endpoint
+│
 
-GET /
+├── tests/
 
-Returns a basic message confirming the API is running.
+│   ├── conftest.py
 
-### Health Check Endpoint
+│   ├── test\_api.py
 
-GET /health
+│   └── test\_app.py
 
-Example response:
+│
+
+├── sample\_customers.csv
+
+├── requirements.txt
+
+├── Dockerfile
+
+├── .dockerignore
+
+└── README.md
+
+```
+
+
+
+\---
+
+
+
+\## API Endpoints
+
+
+
+| Method | Endpoint         | Description                                          |
+
+| ------ | ---------------- | ---------------------------------------------------- |
+
+| GET    | `/`              | API home/status message                              |
+
+| GET    | `/health`        | Health check endpoint                                |
+
+| POST   | `/predict`       | Predict churn for one customer                       |
+
+| POST   | `/predict/batch` | Predict churn for multiple customers from a CSV file |
+
+
+
+\---
+
+
+
+\## Example Single Prediction Request
+
+
+
+```json
 
 {
-"status": "ok",
-"model\_loaded": true
+
+&#x20; "customer\_id": 101,
+
+&#x20; "tenure": 4,
+
+&#x20; "monthly\_charges": 85.5,
+
+&#x20; "total\_charges": 342.0,
+
+&#x20; "contract\_type": "month-to-month",
+
+&#x20; "payment\_method": "electronic\_check"
+
 }
 
-### Prediction Endpoint
+```
 
-POST /predict
 
-Example request:
+
+\## Example Single Prediction Response
+
+
+
+```json
 
 {
-"customer\_id": 101,
-"tenure": 4,
-"monthly\_charges": 85.5,
-"total\_charges": 342.0,
-"contract\_type": "month-to-month",
-"payment\_method": "electronic\_check"
+
+&#x20; "customer\_id": 101,
+
+&#x20; "prediction": 1,
+
+&#x20; "churn\_risk": "High",
+
+&#x20; "churn\_probability": 0.900737490821496
+
 }
 
-Example response:
+```
 
-{
-"customer\_id": 101,
-"prediction": 1,
-"churn\_risk": "High",
-"churn\_probability": 0.900737490821496
-}
 
-## How to Run the Project
 
-1. Open the project folder:
+\---
 
-cd customer\_churn\_api
 
-2. Activate the virtual environment:
 
-venv\\Scripts\\activate
+\## Batch Prediction CSV Format
 
-3. Install dependencies:
+
+
+The batch endpoint accepts a CSV file with these columns:
+
+
+
+```csv
+
+customer\_id,tenure,monthly\_charges,total\_charges,contract\_type,payment\_method
+
+101,4,85.5,342.0,month-to-month,electronic\_check
+
+102,24,65.0,1560.0,one\_year,credit\_card
+
+103,2,95.0,190.0,month-to-month,electronic\_check
+
+```
+
+
+
+\---
+
+
+
+\## Run Locally
+
+
+
+Create and activate a virtual environment:
+
+
+
+```powershell
+
+python -m venv venv
+
+.\\venv\\Scripts\\activate
+
+```
+
+
+
+Install dependencies:
+
+
+
+```powershell
 
 pip install -r requirements.txt
 
-4. Train the model:
+```
 
-python src\\train.py
 
-5. Run the API:
 
-uvicorn app.main:app --reload
+Run the API:
 
-6. Open the interactive API documentation:
+
+
+```powershell
+
+python -m uvicorn app.main:app --reload
+
+```
+
+
+
+Open Swagger docs:
+
+
+
+```text
 
 http://127.0.0.1:8000/docs
 
-## Testing
+```
 
-Run automated tests with:
 
-pytest
 
-The test suite verifies that:
+\---
 
-* The health check endpoint returns a successful response
-* The model-loaded status is returned
-* The prediction endpoint accepts valid customer data
-* The prediction response includes the expected output fields
 
-Example successful test result:
 
-2 passed
+\## Run Tests
 
-## Screenshots
 
-Prediction response screenshot:
 
-screenshots/project1\_predict\_success.png.jpg
+```powershell
 
-Automated test success screenshot:
+python -m pytest
 
-screenshots/project1\_pytest\_success.png
+```
 
-## What I Learned
 
-This project helped me understand how to move a machine learning model from a simple training script into a real API service.
 
-I learned how to prepare a dataset, train a classification model, save a trained model with Joblib, load it inside FastAPI, validate incoming API requests with Pydantic, return real-time ML predictions, and test API endpoints with Pytest.
+Expected result:
 
-## Why This Project Matters
 
-This project demonstrates the foundation of production machine learning.
 
-Instead of only training a model in a notebook, this project turns the model into a working API that another application, dashboard, or business system could use.
+```text
 
-## Future Improvements
+5 passed
 
-* Dockerizing the application
-* Adding batch CSV prediction support
-* Building a dashboard for non-technical users
-* Adding SHAP explainability
-* Adding structured logging
-* Adding monitoring
-* Deploying the API to the cloud
-* Adding GitHub Actions for automated testing
+```
+
+
+
+\---
+
+
+
+\## Run with Docker
+
+
+
+Build the Docker image:
+
+
+
+```powershell
+
+docker build -t customer-churn-api .
+
+```
+
+
+
+Run the container:
+
+
+
+```powershell
+
+docker run -p 8000:8000 customer-churn-api
+
+```
+
+
+
+Open Swagger docs:
+
+
+
+```text
+
+http://127.0.0.1:8000/docs
+
+```
+
+
+
+\---
+
+
+
+\## What This Project Demonstrates
+
+
+
+This project demonstrates core production ML engineering skills:
+
+
+
+\- Turning a trained ML model into an API service
+
+\- Designing request and response schemas
+
+\- Validating user input with Pydantic
+
+\- Handling single and batch predictions
+
+\- Writing automated API tests
+
+\- Adding structured logs for observability
+
+\- Separating API routes from prediction logic
+
+\- Preparing an application for containerized deployment
+
+
+
+\---
+
+
+
+\## Future Improvements
+
+
+
+\- Add GitHub Actions CI for automated test runs
+
+\- Add model explainability with SHAP or feature importance
+
+\- Add MLflow experiment tracking
+
+\- Add authentication for protected API access
+
+\- Deploy the API to a cloud platform
 
